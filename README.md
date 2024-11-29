@@ -1,34 +1,53 @@
-# CustomToast Component & ToastManager
+# Toast Notification System for Expo React Native Project
 
-This repository contains a custom toast notification implementation for React Native using the `react-native-reanimated` library. The `CustomToast` component displays a toast notification with smooth animations, while the `ToastManager` is responsible for managing and emitting toast notifications throughout the app.
+This is a custom toast notification system for Expo React Native projects. The system uses a singleton `ToastManager` to manage toast notifications globally, and a `ToastContainer` component to display the toast messages.
 
 ## Features
 
-- Displays customizable toast notifications with smooth animations.
-- Supports multiple toast types: `success`, `error`, and `info`.
-- Toast disappears automatically after a specified duration or can be dismissed by the user.
-- Allows global toast management using a singleton `ToastManager`.
+- **Global Toast Management**: The `ToastManager` allows toast notifications to be triggered from anywhere in the app.
+- **Customizable Toasts**: You can specify the message, type (`success`, `error`, `info`), and duration of the toast.
+- **Automatic or Manual Dismissal**: Toasts automatically disappear after a specified duration, or they can be manually dismissed by tapping on them.
+- **React Native Reanimated**: Uses `react-native-reanimated` to animate toast appearances and disappearances.
 
-## Components
+## Installation
 
-### `CustomToast`
+1. Clone the repository:
 
-The `CustomToast` component renders a toast notification with a background color depending on the toast type (`success`, `error`, `info`). It provides smooth entrance and exit animations, and can be dismissed on touch or after a specified duration.
+```bash
+npm i expo-toastee
+```
 
-#### Props
-
-- `message` (string, required): The message to be displayed in the toast notification.
-- `type` ('success' | 'error' | 'info', optional): The type of the toast, which determines the background color. Default is `info`.
-- `onHide` (function, optional): A callback function that is called when the toast is dismissed.
-- `duration` (number, optional): The duration (in milliseconds) for which the toast is visible before it disappears. Default is `4000` ms.
-
-#### Example Usage
+2. Import the `ToastManager` and `ToastContainer` components into your project:
 
 ```tsx
-<CustomToast
-  message="Data saved successfully!"
-  type="success"
-  duration={3000}
-  onHide={() => console.log('Toast hidden')}
-/>
+import { ToastContainer } from 'expo-toastee'
+
+// Inside your main component
+return (
+  <View style={styles.container}>
+    <Text>My App</Text>
+    <ToastContainer />
+  </View>
+)
 ```
+
+3. Trigger a toast message from anywhere in your app:
+
+```tsx
+import { toast } from 'expo-toastee'
+
+// Show a toast message
+toast.show({
+  message: 'Operation successful!',
+  type: 'success', // 'success', 'error', 'info'
+  duration: 3000, // Duration in milliseconds (default is 2000ms)
+})
+```
+
+## Usage
+
+The toast notification system consists of two components: `ToastManager` and `ToastContainer`.
+
+# Toast Notification System for Expo React Native Project
+
+This is a custom toast notification system for Expo React Native projects. The system uses a singleton `ToastManager` to manage toast notifications globally, and a `ToastContainer` component to display the toast messages.
