@@ -1,0 +1,26 @@
+{
+  "name": "test-expo",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "bun build src/index.ts --outdir dist",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "expo",
+    "react-native",
+    "package"
+  ],
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/bun": "latest",
+    "typescript": "^5.7.2"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1",
+    "react-native": "^0.76.3",
+    "expo": "^52.0.11",
+    "react-native-reanimated": "^3.16.3"
+  }
+}
