@@ -22,6 +22,7 @@ const WINDOW_HEIGHT = Dimensions.get('window').height
 export interface ToastConfig {
   backgroundColor?: string
   textColor?: string
+  textSize?: number
 }
 interface ToastProps {
   message: string
@@ -39,6 +40,7 @@ const CustomToast: React.FC<ToastProps> = ({
   config = {
     backgroundColor: '#333',
     textColor: '#fff',
+    textSize: 12,
   },
 }) => {
   const colorScheme = useColorScheme()
@@ -112,6 +114,7 @@ const CustomToast: React.FC<ToastProps> = ({
           justifyContent: 'center',
           position: 'absolute',
           maxWidth: 300,
+          width: 'auto',
           left: '50%',
           bottom: 100,
           borderRadius: 8,
@@ -132,10 +135,8 @@ const CustomToast: React.FC<ToastProps> = ({
       ></View>
       <Text
         style={{
-          fontSize: 14,
+          fontSize: config.textSize,
           color: config.textColor,
-          textAlign: 'center',
-          flex: 1,
           flexWrap: 'wrap',
           lineHeight: 20,
         }}
