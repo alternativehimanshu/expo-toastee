@@ -83,7 +83,7 @@ const CustomToast: React.FC<ToastProps> = ({
     }
   }
 
-  const bg = colorScheme === 'dark' ? '#252525aa' : '#f9f9f9aa'
+  const bg = colorScheme === 'dark' ? '#252525aa' : '#252525aa'
   return (
     <Animated.View
       onTouchEnd={hideToast}
@@ -92,14 +92,18 @@ const CustomToast: React.FC<ToastProps> = ({
         {
           backgroundColor: bg,
           shadowColor: '#000',
-          shadowOffset: { width: 0, height: 2 },
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
           shadowOpacity: 0.25,
-          shadowRadius: 4,
+          shadowRadius: 3.84,
           elevation: 5,
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'center',
           position: 'absolute',
+          maxWidth: 300,
           left: '50%',
           bottom: 100,
           borderRadius: 8,
