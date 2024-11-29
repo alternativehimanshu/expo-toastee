@@ -1,6 +1,6 @@
 {
   "name": "expo-toastee",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -25,9 +25,9 @@
     "typescript": "^5.7.2"
   },
   "peerDependencies": {
-    "react": "^18.0.0",
-    "react-native": "^0.75.0",
-    "expo": "^50.0.0",
+    "expo": "*",
+    "react": "*",
+    "react-native": "*",
     "react-native-reanimated": "^3.16.0"
   }
 }
