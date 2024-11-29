@@ -1,33 +1,40 @@
 // components/Toast/CustomToast.tsx
 
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, Dimensions, View } from 'react-native';
+import React, { useEffect, useState } from 'react'
+import {
+  StyleSheet,
+  Text,
+  Dimensions,
+  View,
+  useColorScheme,
+} from 'react-native'
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
   withSpring,
   runOnJS,
-} from 'react-native-reanimated';
+} from 'react-native-reanimated'
 
-const DURATION = 4000;
-const WINDOW_HEIGHT = Dimensions.get('window').height;
+const DURATION = 4000
+const WINDOW_HEIGHT = Dimensions.get('window').height
 
 interface ToastProps {
-  message: string;
-  type?: 'success' | 'error' | 'info';
-  onHide?: () => void;
-  duration?: number;
+  message: string
+  type?: 'success' | 'error' | 'info'
+  onHide?: () => void
+  duration?: number
 }
 
-export const CustomToast: React.FC<ToastProps> = ({
+const CustomToast: React.FC<ToastProps> = ({
   message,
   type = 'info',
   onHide,
   duration = DURATION,
 }) => {
-  const opacity = useSharedValue(0);
-  const translateY = useSharedValue(WINDOW_HEIGHT);
+  const colorScheme = useColorScheme()
+  const opacity = useSharedValue(0)
+  const translateY = useSharedValue(WINDOW_HEIGHT)
 
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: opacity.value,
@@ -35,24 +42,24 @@ export const CustomToast: React.FC<ToastProps> = ({
       { translateY: translateY.value },
       { translateX: '-50%' }, // Use fixed value instead of percentage
     ],
-  }));
+  }))
 
   useEffect(() => {
-    opacity.value = withTiming(1, { duration: 100 });
+    opacity.value = withTiming(1, { duration: 100 })
     translateY.value = withSpring(-0, {
       damping: 15,
       stiffness: 100,
-    });
+    })
 
     const timer = setTimeout(() => {
-      hideToast();
-    }, duration);
+      hideToast()
+    }, duration)
 
-    return () => clearTimeout(timer);
-  }, []);
+    return () => clearTimeout(timer)
+  }, [])
 
   const hideToast = () => {
-    opacity.value = withTiming(0, { duration: 200 });
+    opacity.value = withTiming(0, { duration: 200 })
     translateY.value = withSpring(
       WINDOW_HEIGHT,
       {
@@ -60,29 +67,30 @@ export const CustomToast: React.FC<ToastProps> = ({
         stiffness: 100,
       },
       () => {
-        runOnJS(onHide as any)?.();
-      },
-    );
-  };
+        runOnJS(onHide as any)?.()
+      }
+    )
+  }
 
   const getBackgroundColor = () => {
     switch (type) {
       case 'success':
-        return '#4caf50';
+        return '#4caf50'
       case 'error':
-        return '#f44336';
+        return '#f44336'
       default:
-        return '#2196f3';
+        return '#2196f3'
     }
-  };
+  }
 
+  const bg = colorScheme === 'dark' ? '#252525aa' : '#f9f9f9aa'
   return (
     <Animated.View
       onTouchEnd={hideToast}
       style={[
         animatedStyle,
         {
-          backgroundColor: '#000000aa',
+          backgroundColor: bg,
           shadowColor: '#000',
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.25,
@@ -112,60 +120,65 @@ export const CustomToast: React.FC<ToastProps> = ({
       ></View>
       <Text style={{ fontSize: 14, color: 'white' }}>{message}</Text>
     </Animated.View>
-  );
-};
+  )
+}
 
-import { EventEmitter } from 'events';
+import { EventEmitter } from 'events'
 
-type ToastType = 'success' | 'error' | 'info';
+type ToastType = 'success' | 'error' | 'info'
 
 interface ToastOptions {
-  message: string;
-  type?: ToastType;
-  duration?: number;
+  message: string
+  type?: ToastType
+  duration?: number
 }
 
 class ToastManager {
-  private static instance: ToastManager;
-  private emitter: EventEmitter;
+  private static instance: ToastManager
+  private emitter: EventEmitter
 
   private constructor() {
-    this.emitter = new EventEmitter();
+    this.emitter = new EventEmitter()
   }
 
   public static getInstance(): ToastManager {
     if (!ToastManager.instance) {
-      ToastManager.instance = new ToastManager();
+      ToastManager.instance = new ToastManager()
     }
-    return ToastManager.instance;
+    return ToastManager.instance
   }
 
   show(options: ToastOptions) {
-    this.emitter.emit('show', options);
+    this.emitter.emit('show', options)
   }
 
   subscribe(callback: (options: ToastOptions) => void) {
-    this.emitter.on('show', callback);
-    return () => this.emitter.off('show', callback);
+    this.emitter.on('show', callback)
+    return () => this.emitter.off('show', callback)
   }
 }
 
-export const toast = ToastManager.getInstance();
+interface Toast {
+  show: (options: ToastOptions) => void
+  subscribe: (callback: (options: ToastOptions) => void) => () => void
+}
+
+export const toast: Toast = ToastManager.getInstance()
 
 // ToastContainer.tsx
 
 export const ToastContainer: React.FC = () => {
   const [toastConfig, setToastConfig] = useState<{
-    visible: boolean;
-    message: string;
-    type: ToastType;
-    duration: number;
+    visible: boolean
+    message: string
+    type: ToastType
+    duration: number
   }>({
     visible: false,
     message: '',
     type: 'info',
     duration: 2000,
-  });
+  })
 
   //@ts-ignore
   useEffect(() => {
@@ -175,11 +188,11 @@ export const ToastContainer: React.FC = () => {
         message: options.message,
         type: options.type || 'info',
         duration: options.duration || 2000,
-      });
-    });
+      })
+    })
 
-    return () => unsubscribe();
-  }, []);
+    return () => unsubscribe()
+  }, [])
 
   return (
     <>
@@ -192,5 +205,5 @@ export const ToastContainer: React.FC = () => {
         />
       )}
     </>
-  );
-};
+  )
+}
