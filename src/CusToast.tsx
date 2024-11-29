@@ -19,11 +19,16 @@ import Animated, {
 const DURATION = 4000
 const WINDOW_HEIGHT = Dimensions.get('window').height
 
+export interface ToastConfig {
+  backgroundColor?: string
+  textColor?: string
+}
 interface ToastProps {
   message: string
   type?: 'success' | 'error' | 'info'
   onHide?: () => void
   duration?: number
+  config?: ToastConfig
 }
 
 const CustomToast: React.FC<ToastProps> = ({
@@ -31,6 +36,10 @@ const CustomToast: React.FC<ToastProps> = ({
   type = 'info',
   onHide,
   duration = DURATION,
+  config = {
+    backgroundColor: '#333',
+    textColor: '#fff',
+  },
 }) => {
   const colorScheme = useColorScheme()
   const opacity = useSharedValue(0)
@@ -72,7 +81,7 @@ const CustomToast: React.FC<ToastProps> = ({
     )
   }
 
-  const getBackgroundColor = () => {
+  const getDotColor = () => {
     switch (type) {
       case 'success':
         return '#4caf50'
@@ -83,14 +92,13 @@ const CustomToast: React.FC<ToastProps> = ({
     }
   }
 
-  const bg = '#252525'
   return (
     <Animated.View
       onTouchEnd={hideToast}
       style={[
         animatedStyle,
         {
-          backgroundColor: bg,
+          backgroundColor: config.backgroundColor,
           shadowColor: '#000',
           shadowOffset: {
             width: 0,
@@ -119,10 +127,21 @@ const CustomToast: React.FC<ToastProps> = ({
           width: 8,
           height: 8,
           borderRadius: 50,
-          backgroundColor: getBackgroundColor(),
+          backgroundColor: getDotColor(),
         }}
       ></View>
-      <Text style={{ fontSize: 14, color: 'white' }}>{message}</Text>
+      <Text
+        style={{
+          fontSize: 14,
+          color: config.textColor,
+          textAlign: 'center',
+          flex: 1,
+          flexWrap: 'wrap',
+          lineHeight: 20,
+        }}
+      >
+        {message}
+      </Text>
     </Animated.View>
   )
 }
@@ -170,8 +189,10 @@ interface Toast {
 export const toast: Toast = ToastManager.getInstance()
 
 // ToastContainer.tsx
-
-export const ToastContainer: React.FC = () => {
+interface ToastContainerProps {
+  config?: ToastConfig
+}
+export const ToastContainer: React.FC<ToastContainerProps> = ({ config }) => {
   const [toastConfig, setToastConfig] = useState<{
     visible: boolean
     message: string
@@ -206,6 +227,7 @@ export const ToastContainer: React.FC = () => {
           type={toastConfig.type}
           onHide={() => setToastConfig((prev) => ({ ...prev, visible: false }))}
           duration={toastConfig.duration}
+          config={config}
         />
       )}
     </>
