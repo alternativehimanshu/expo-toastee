@@ -83,7 +83,7 @@ const CustomToast: React.FC<ToastProps> = ({
     }
   }
 
-  const bg = colorScheme === 'dark' ? '#252525aa' : '#252525aa'
+  const bg = '#252525'
   return (
     <Animated.View
       onTouchEnd={hideToast}

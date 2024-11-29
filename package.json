@@ -1,6 +1,6 @@
 {
   "name": "expo-toastee",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -20,8 +20,8 @@
     "directory": "packages/expo-blur"
   },
   "devDependencies": {
-    "@types/react": "^18.3.12",
     "@types/bun": "latest",
+    "@types/react": "^18.3.12",
     "typescript": "^5.7.2"
   },
   "peerDependencies": {
